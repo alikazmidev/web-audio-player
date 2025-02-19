@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boosted M4A Audio Player</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .player {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        audio {
+            width: 100%;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="player">
+        <h1>Boosted M4A Audio Player</h1>
+        <audio id="audioPlayer" controls>
+            <source src="recording.m4a" type="audio/mp4">
+            Your browser does not support the audio element.
+        </audio>
+    </div>
+
+    <script>
+        // Get the audio element
+        const audio = document.getElementById('audioPlayer');
+
+        // Create an AudioContext and connect it to the audio element
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const source = audioContext.createMediaElementSource(audio);
+
+        // Create a GainNode to control the volume
+        const gainNode = audioContext.createGain();
+        gainNode.gain.value = 6.0; // Boost volume by 200% (2.0 = 200%)
+
+        // Connect the nodes: source -> gainNode -> destination
+        source.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+
+        // Play the audio
+        audio.addEventListener('play', () => {
+            audioContext.resume(); // Required for autoplay policies in some browsers
+        });
+    </script>
+</body>
+</html>
